@@ -1,0 +1,54 @@
+﻿@page "/UserList"
+@inject Data.UniContext ctx;
+<h3>لیست کاربران</h3>
+
+<table class="table table-danger">
+    <thead>
+        <tr>
+            <th scope="col">نام</th>
+            <th scope="col">ایمیل</th>
+            <th scope="col">شماره تماس</th>
+            <th scope="col">#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (list.Count != 0 && list != null)
+        {
+
+            @foreach (var item in list)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Phone</td>
+                    <td> <button class="btn btn-danger"  @onclick="(()=> DeleteUser(item.Id))"><i class="oi oi-trash"></i></button> </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+
+
+@code {
+    List<Data.User> list = new List<Data.User>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        list.AddRange(ctx.User.ToList());
+
+    }
+    void DeleteUser(int id)
+    {
+        if (ctx.User.Any(a => a.Id == id))
+        {
+            Data.User user = ctx.User.Find(id);
+
+            ctx.Remove(user);
+            ctx.SaveChanges();
+            list.Remove(user);
+        }
+
+    }
+
+}

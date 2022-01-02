@@ -1,0 +1,59 @@
+﻿@page "/CreateUser"
+@using Microsoft.Extensions.Logging
+@inject ILogger<CreateUser> Logger
+@inject Data.UniContext ctx;
+@inject NavigationManager nav;
+<h3>افزودن کاربر</h3>
+<EditForm Model="User" OnValidSubmit="@saveUser">
+    <DataAnnotationsValidator  />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>نام</label>
+        <InputText @bind-Value="User.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>ایمیل</label>
+        <InputText @bind-Value="User.Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>شماره تماس</label>
+        <InputText @bind-Value="User.Phone"  class="form-control" />
+    </div>
+    <div class="form-group">
+      
+        <button class="btn btn-primary btn-block" >ذخیره سازی</button>
+    </div>
+</EditForm>
+
+@code {
+
+    Data.User User = new Data.User();
+    private EditContext? editContext;
+    protected override void OnInitialized()
+    {
+        editContext = new(User);
+        editContext.AddDataAnnotationsValidation();
+
+    }
+
+    private async Task saveUser()
+    {
+        if (editContext != null && editContext.Validate())
+        {
+            Console.WriteLine(User);
+            Logger.LogInformation("form is valid");
+
+            await ctx.User.AddAsync(User);
+            await ctx.SaveChangesAsync();
+
+            User = new Data.User();
+            nav.NavigateTo("/UserList");
+            await Task.CompletedTask;
+        }
+        else
+        {
+            Logger.LogInformation("form not valid");
+        }
+    }
+}
