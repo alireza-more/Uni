@@ -2,6 +2,18 @@
 @inject Data.UniContext ctx;
 <h3>لیست کاربران</h3>
 
+<hr />
+<br />
+<div class="input-group mb-3">
+    <input @bind="searchParam" type="text" class="form-control" placeholder="جستجو کنید..." style="outline:none" >
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" @onclick="(()=>search())">جستجو</button>
+    </div>
+</div>
+<br />
+<hr />
+<br />
+
 <table class="table table-danger">
     <thead>
         <tr>
@@ -21,7 +33,7 @@
                     <td>@item.Name</td>
                     <td>@item.Email</td>
                     <td>@item.Phone</td>
-                    <td> <button class="btn btn-danger"  @onclick="(()=> DeleteUser(item.Id))"><i class="oi oi-trash"></i></button> </td>
+                    <td> <button class="btn btn-danger" @onclick="(()=> DeleteUser(item.Id))"><i class="oi oi-trash"></i></button> </td>
                 </tr>
             }
         }
@@ -32,6 +44,8 @@
 
 @code {
     List<Data.User> list = new List<Data.User>();
+
+    string searchParam = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,7 +62,12 @@
             ctx.SaveChanges();
             list.Remove(user);
         }
+    }
 
+    void search()
+    {
+        list = new List<Data.User>();
+        list.AddRange(ctx.User.Where(a => a.Name.Contains(searchParam)|| a.Phone.Contains(searchParam)).ToList());
     }
 
 }
