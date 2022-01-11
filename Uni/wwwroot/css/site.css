@@ -1,7 +1,12 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    @font-face {
+        font-family: ekhlas;
+        src: url("/Mj_Ekhlass_0.ttf")
+    }
+
+    font-family: 'ekhlas', Helvetica, Arial, sans-serif;
 }
 
 a, .btn-link {
@@ -48,6 +53,48 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
-    .oi{
-        margin:5px;
+
+.oi {
+    margin: 5px;
+}
+
+
+
+
+.box {
+    width: 100%;
+    background-color: #EC4438;
+    padding: 50px;
+    display: inline-block;
+    border-radius: 20px;
+}
+
+.right {
+    float: right;
+    width: 30%
+}
+
+.left {
+    color: #fff;
+    float: left;
+    width: 70%
+}
+
+.image {
+    align-items: center;
+}
+
+    .image > img {
+        border-radius: 50%;
+        border: 5px #fff solid;
+        max-width: 200px;
+        max-height: 200px;
     }
+.name {
+    font-size: 20px;
+    margin-right:50px;
+}
+.text {
+    color: #ede6d3 ;
+    font-size: 15px
+}
