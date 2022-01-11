@@ -32,8 +32,12 @@ namespace Uni
             services.AddServerSideBlazor();
             services.AddSyncfusionBlazor(options => { options.EnableRtl = true; });
 
+            //sql
             services.AddDbContext<UniContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UniContext")));
+
+            //memory
+            //  services.AddDbContext<UniContext>(options => options.UseInMemoryDatabase("test"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +53,6 @@ namespace Uni
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
